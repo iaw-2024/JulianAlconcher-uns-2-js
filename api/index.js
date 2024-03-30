@@ -9,9 +9,12 @@ async function getSongs() {
     return obj;
 }
 
+app.set('views','C:/Users/julia/Documents/IAW Proyectos VSCODE/Ejercicio Tecnico 2/JulianAlconcher-uns-2-js/public/express');
+
 app.get("/express", (req, res) => {
     getSongs().then((json) => res.render("index", { obj : json }));
 });
+
 app.get("/cliente_servidor", (req, res) => res.send("Cliente Servidor on Vercel!"));
 
 app.use(express.static('public'));
