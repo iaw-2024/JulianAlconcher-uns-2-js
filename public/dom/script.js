@@ -10,9 +10,9 @@ axios.get(ApiEndPoint)
             firstFiveSongs.forEach(element => {
                 let li = document.createElement("li");
                 li.textContent = `${element.song_name} - ${element.artist_name} `;
-                let p = document.createElement("p");
-                p.textContent = `${element.album_name}, Año: ${element.release_date.slice(0,4)}`;
-                li.appendChild(p);
+                let h4 = document.createElement("h4");
+                h4.textContent = `Album: ${element.album_name}, Año: ${element.release_date.slice(0,4)}`;
+                li.appendChild(h4);
                 ulSongs.appendChild(li);
             });
         } else {
@@ -21,7 +21,7 @@ axios.get(ApiEndPoint)
     })
     .catch(error => {
         console.error('Error fetching data:', error);
-    });
+});
 
 
 
