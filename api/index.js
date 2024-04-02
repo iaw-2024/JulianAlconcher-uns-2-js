@@ -1,7 +1,11 @@
 const express = require("express");
+const axios = require("axios");
+const path = require('path');
 const app = express();
 
-app.set("view engine", "ejs");
+app.set('view engine', 'ejs');
+app.set('views', path.resolve('public/express/views'));
+app.use(express.static('public'));
 
 async function getSongs() {
     const response = await fetch("https://6600c5a387c91a116419a29f.mockapi.io/songs");
@@ -9,13 +13,25 @@ async function getSongs() {
     return obj;
 }
 
-app.set('views','C:/Users/julia/Documents/IAW Proyectos VSCODE/Ejercicio Tecnico 2/JulianAlconcher-uns-2-js/public/express');
-
 app.get("/express", (req, res) => {
     getSongs().then((json) => res.render("index", { obj : json }));
 });
 
-app.get("/cliente_servidor", (req, res) => res.send("Cliente Servidor on Vercel!"));
+// Ruta para obtener datos desde la API externa
+app.get('/cliente_servidor', async (req, res) => {
+  try {
+      const response = await axios.get('https://6600c5a387c91a116419a29f.mockapi.io/songs');
+      console.log(response.data); // Imprimir datos recibidos del servidor externo
+      const obj = response.data;
+      res.json(obj);
+  } catch (error) {
+      console.error('Error al obtener datos de la API:', error);
+      console.error('Error de respuesta:', error.response.data); // Imprimir cualquier mensaje de error de la API externa
+      res.status(500).json({ error: 'Error al obtener datos de la API' });
+  }
+});
+
+
 
 app.use(express.static('public'));
 
