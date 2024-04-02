@@ -1,19 +1,28 @@
+const ApiEndPoint = "https://6600c5a387c91a116419a29f.mockapi.io/songs";
 
-let song_name = ["Fuiste tu", "La mordidita" ,"Clint Eastwood" ,"Danza kuduro" ,"Peluquita"]
-let artist_name = ["Ricardo Arjona", "Ricky Martin", "Gorillaz","Don Omar" ,"El kuelgue"]
-let album_name = ["Independiente", "A quien quiera escuchar", "Gorillaz", "Meet the Orphans" ,"Hola precioso"]
-let release_date = ["2011", "2015", "2001", "2010", "2023"]
+let ulSongs = document.getElementById("canciones-list");
 
-let ulSongs = document.getElementById("canciones-list")
+axios.get(ApiEndPoint)
+    .then((response) => {
+        const datos = response.data;
+        if (Array.isArray(datos)) {
+            const firstFiveSongs = datos.slice(0, 5);
+            firstFiveSongs.forEach(element => {
+                let li = document.createElement("li");
+                li.textContent = `${element.song_name} - ${element.artist_name} `;
+                let p = document.createElement("p");
+                p.textContent = `${element.album_name}, Año: ${element.release_date.slice(0,4)}`;
+                li.appendChild(p);
+                ulSongs.appendChild(li);
+            });
+        } else {
+            console.error("Bad request: data is not an array.");
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
 
-for (let i = 0; i < song_name.length; i++) {
-    let li = document.createElement("li")
-    li.textContent = `${song_name[i]} - ${artist_name[i]} `
-    let p = document.createElement("p")
-    p.textContent =  `${album_name[i]}, Año: ${release_date[i]}`
-    li.appendChild(p)
-    ulSongs.appendChild(li)
-}
 
 
 
